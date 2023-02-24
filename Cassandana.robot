@@ -4,5 +4,8 @@ Resource    Cassandana.resource
 
 *** Test Cases ***
 
-Cassandana MQTT Broker Is Running
-    Make an HTTP Request    192.168.1.100    9044
+Cassandana MQTT Broker Is Exposing Metrics
+    Get metrics from cassandana
+
+Casssandana Has A Metric For mqttConnectionAttempts
+    Verify Cassandana Has Metric  mqttServerInitialized_total
