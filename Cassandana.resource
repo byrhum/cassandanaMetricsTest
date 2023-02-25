@@ -18,10 +18,11 @@ Verify Metric Exists In Response
     [Arguments]    ${metric_name}
     ${response}=  Get Metrics From Cassandana
     ${matched}=  Should Match Regexp    ${response}  ^|\\n${metric_name}\\s
-    Log  ${matched}
 
 Verify Cassandana Has Metric
     [Arguments]    ${metric_name}
     Verify Metric Exists In Response  ${metric_name}
 
-
+Verify Cassandana Metric ${metric_name} equals ${expected_metric_value}
+    ${response}=  Get Metrics From Cassandana
+    Should Match Regexp    ${response}    ^|\\n${metric_name}\\s${expected_metric_value}\\n

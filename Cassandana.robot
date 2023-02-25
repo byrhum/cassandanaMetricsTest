@@ -9,3 +9,6 @@ Cassandana MQTT Broker Is Exposing Metrics
 
 Casssandana Has A Metric For mqttConnectionAttempts
     Verify Cassandana Has Metric  mqttServerInitialized_total
+
+Cassandana mqttServerInitialized_total is initialized with the correct value
+    Verify Cassandana Metric mqttServerInitialized_total equals 0.0
