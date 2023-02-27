@@ -25,8 +25,11 @@ Verify Cassandana Has Metric
     Verify Metric Exists In Response  ${metric_name}
 
 Verify Cassandana Metric ${metric_name} equals ${expected_metric_value}
+    #Metric Value will include a floating point which breaks regex. Should expect a whole number as an argument.
+    #    will have to find a better solution for this in the future to avoid false positives.
+
     ${response}=  Get Metrics From Cassandana
-    ${match}=    Should Match Regexp    ${response}    ${metric_name} ${expected_metric_value}
+    ${match}=    Should Match Regexp    ${response}    \\b(?=\\w)${metric_name}\\s${expected_metric_value}\\.0[\\n$] 
     Log To Console    MATCH ${match} \n
 
 Connect to MQTT server
