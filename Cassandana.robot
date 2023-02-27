@@ -10,5 +10,13 @@ Cassandana MQTT Broker Is Exposing Metrics
 Casssandana Has A Metric For mqttConnectionAttempts
     Verify Cassandana Has Metric  mqttServerInitialized_total
 
-Cassandana mqttServerInitialized_total is initialized with the correct value
-    Verify Cassandana Metric mqttServerInitialized_total equals 0.0
+Cassandana metrics are initialized with the correct values
+    Verify Cassandana Metric mqttServerInitialized_total equals 1.0
+    Verify Cassandana Metric mqttHandleMessageConnect_total equals 0.0
+    Verify Cassandana Metric mqttHandleMessage_total equals 0.0
+
+Cassandana metric for mqttConnectionAttempts_total is increased on MQTT connect
+    Connect to MQTT server    192.168.1.112
+    Verify Cassandana Metric mqttConnectionAttempts_total equals 2.0
+    Disconnect from MQTT server
+

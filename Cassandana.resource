@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation    Resource file for Cassanada.robot
 Library    RequestsLibrary
+Library    MQTTLibrary
 Library    Collections
 Library    String
 
@@ -25,4 +26,12 @@ Verify Cassandana Has Metric
 
 Verify Cassandana Metric ${metric_name} equals ${expected_metric_value}
     ${response}=  Get Metrics From Cassandana
-    Should Match Regexp    ${response}    ^|\\n${metric_name}\\s${expected_metric_value}\\n
+    ${match}=    Should Match Regexp    ${response}    ${metric_name} ${expected_metric_value}
+    Log To Console    MATCH ${match} \n
+
+Connect to MQTT server
+    [Arguments]    ${server_ip}
+    Connect    ${server_ip}
+
+Disconnect from MQTT server
+    Disconnect
