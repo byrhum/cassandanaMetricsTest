@@ -4,6 +4,7 @@ Library    RequestsLibrary
 Library    MQTTLibrary
 Library    Collections
 Library    String
+Library    Helper.py
 
 *** Keywords ***
 Make An HTTP Post Request
@@ -25,11 +26,10 @@ Verify Cassandana Has Metric
     Verify Metric Exists In Response  ${metric_name}
 
 Verify Cassandana Metric ${metric_name} equals ${expected_metric_value}
-    #Metric Value will include a floating point which breaks regex. Should expect a whole number as an argument.
-    #    will have to find a better solution for this in the future to avoid false positives.
-
+    ${expected_metric_regex}=  get regex for metric value  ${expected_metric_value}
     ${response}=  Get Metrics From Cassandana
-    ${match}=    Should Match Regexp    ${response}    \\b(?=\\w)${metric_name}\\s${expected_metric_value}\\.0[\\n$] 
+    Log to console  "Expected regex ${expected_metric_regex}"
+    ${match}=    Should Match Regexp    ${response}    \\b(?=\\w)${metric_name}\\s${expected_metric_regex}
     Log To Console    MATCH ${match} \n
 
 Connect to MQTT server
