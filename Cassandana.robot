@@ -15,7 +15,19 @@ Cassandana metrics are initialized with the correct values
     Verify Cassandana Metric mqttHandleMessageConnect_total equals 0.0
     Verify Cassandana Metric mqttHandleMessage_total equals 0.0
     Verify Cassandana Metric mqttConnectionNullIdNotAllowed_total equals 0.0
+    Verify Cassandana Metric mqttConnectionClientIdGenerated_total equals 0.0
 
 Cassandana metric for mqttConnectionAttempts_total is increased on MQTT connect
     Verify Metrics Increase On Connect
+
+Cassandana metric for mqttConnectionNullIdNotAllowed_total is increased
+    Connect To MQTT Server With NULL Client ID
+    Disconnect from MQTT Server
+
+#  This test requires configuration allow_zero_byte_client_id: yes.
+#
+#Cassandana metric for mqttConnectionClientIdGenerated_total is increased
+#    Connect to MQTT Server With Clean Session True and NULL Client ID
+#    Disconnect from MQTT Server
+
 
