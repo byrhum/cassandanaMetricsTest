@@ -78,6 +78,16 @@ Connect to MQTT Server With Clean Session True and NULL Client ID
     Connect  ${HOST}  client_id=  clean_session=${true}
     Verify Cassandana Metric ${metric_name} equals ${expected_metric}
 
+Verify metric mqttConnectionSessionBindAttempt_total on succesful client connect
+    ${metric_name}=  Set Variable  mqttConnectionSessionBindAttempt_total
+    ${metric_increment}=  Set Variable  1
+    ${initial_metric}=  Get Value for Metric ${metric_name}
+    ${expected_metric}=  Evaluate  ${initial_metric} + ${metric_increment}
+
+    Connect  ${HOST}  client_id=${CLIENT_ID}  clean_session=${true}
+    Verify Cassandana Metric ${metric_name} equals ${expected_metric}
+
+
 Connect to MQTT server
     [Arguments]    ${server_ip}  ${client_id}=""
     Connect    ${server_ip}  client_id=${client_id}
