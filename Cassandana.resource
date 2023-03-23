@@ -35,61 +35,21 @@ Verify Cassandana Metric ${metric_name} equals ${expected_metric_value}
     ${response}=  Get Metrics From Cassandana
     ${match}=    Should Match Regexp    ${response}    \\b(?=\\w)${metric_name}\\s${expected_metric_regex}
 
-Verify Cassandana Metric ${metric_name} increases by ${expected_increase}
-    ${initial_metric}=  Get Value for Metric ${metric_name}
-    ${expected_metric}=  Evaluate  ${initial_metric} + ${expected_increase}
-    Verify Cassandana Metric ${metric_name} equals ${expected_metric}
-
 Get Value for Metric ${metric_name}
     ${response}=  Get Metrics From Cassandana
     ${match}=  Should Match Regexp    ${response}    \\b(?=\\w)${metric_name}\\s\\d+\\.\\d+
     ${return_value}=  Get Value From Metric Value Pair  ${match}
     [Return]  ${return_value}
 
-Verify Metrics Increase On Connect
-    ${metric_increase}=  Set Variable  1.0
-    ${initial_metric}=  Get Value For Metric mqttHandleMessageConnect_total
-    ${expected_metric}=  Evaluate  ${initial_metric} + ${metric_increase}
-    Connect to MQTT server  ${HOST}  ${CLIENT_ID}
-    Verify Cassandana Metric mqttHandleMessageConnect_total equals ${expected_metric}
-    Disconnect From MQTT Server    
-
-Connect To MQTT Server With NULL Client ID
-    ${metric_increase}=  Set Variable  2.0
-    ${initial_metric}=  Get Value For Metric mqttConnectionNullIdNotAllowed_total
-    ${expected_metric}=  Evaluate  ${initial_metric} + ${metric_increase}
-    Connect  ${HOST}  client_id=
-
-Connect to MQTT Server With Clean Session False and NULL Client ID
-    ${metric_name}=  Set Variable  mqttConnectionNullIdNotAllowed_total
-    ${metric_increment}=  Set Variable  1
+Verify metric ${metric_name} on client connect with client id ${client_id}
     ${initial_metric}=  Get Value for Metric ${metric_name}
-    ${expected_metric}=  Evaluate  ${initial_metric} + ${metric_increment}
+    ${expected_metric}=  Evaluate  ${initial_metric} + 1
 
-    Connect  ${HOST}  client_id=  clean_session=${false}
+    Connect  ${HOST}  client_id=${client_id}  clean_session=${true}
     Verify Cassandana Metric ${metric_name} equals ${expected_metric}
-
-Connect to MQTT Server With Clean Session True and NULL Client ID
-    ${metric_name}=  Set Variable  mqttConnectionClientIdGenerated_total
-    ${metric_increment}=  Set Variable  1
-    ${initial_metric}=  Get Value for Metric ${metric_name}
-    ${expected_metric}=  Evaluate  ${initial_metric} + ${metric_increment}
-
-    Connect  ${HOST}  client_id=  clean_session=${true}
-    Verify Cassandana Metric ${metric_name} equals ${expected_metric}
-
-Verify metric mqttConnectionSessionBindAttempt_total on succesful client connect
-    ${metric_name}=  Set Variable  mqttConnectionSessionBindAttempt_total
-    ${metric_increment}=  Set Variable  1
-    ${initial_metric}=  Get Value for Metric ${metric_name}
-    ${expected_metric}=  Evaluate  ${initial_metric} + ${metric_increment}
-
-    Connect  ${HOST}  client_id=${CLIENT_ID}  clean_session=${true}
-    Verify Cassandana Metric ${metric_name} equals ${expected_metric}
-
 
 Connect to MQTT server
-    [Arguments]    ${server_ip}  ${client_id}=""
+    [Arguments]    ${server_ip}  ${client_id}=${EMPTY}
     Connect    ${server_ip}  client_id=${client_id}
 
 Disconnect from MQTT server

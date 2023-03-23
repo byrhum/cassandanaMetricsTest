@@ -19,14 +19,16 @@ Cassandana metrics are initialized with the correct values
     Verify Cassandana Metric mqttConnectionSessionBindAttempt_total equals 0.0
 
 Cassandana metric for mqttConnectionAttempts_total is increased on MQTT connect
-    Verify Metrics Increase On Connect
+    Verify metric mqttHandleMessageConnect_total on client connect with client id ${client_id}
+    Disconnect from MQTT Server
 
 Cassandana metric for mqttConnectionNullIdNotAllowed_total is increased
-    Connect To MQTT Server With NULL Client ID
+    Verify metric mqttConnectionNullIdNotAllowed_total on client connect with client id ${EMPTY}
     Disconnect from MQTT Server
 
 Cassandana metric for mqttConnectionSessionBindAttempt_total is increased with client connect
-    Verify metric mqttConnectionSessionBindAttempt_total on succesful client connect
+    Verify metric mqttConnectionSessionBindAttempt_total on client connect with client id "test_client"
+    Disconnect from MQTT Server
 
 #  This test requires configuration allow_zero_byte_client_id: yes.
 #
