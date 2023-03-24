@@ -48,8 +48,15 @@ Verify metric ${metric_name} on client connect with client id ${client_id}
     Connect  ${HOST}  client_id=${client_id}  clean_session=${true}
     Verify Cassandana Metric ${metric_name} equals ${expected_metric}
 
+Verify metric ${metric_name} on client disconnect
+    ${initial_metric}=  Get Value for Metric ${metric_name}
+    ${expected_metric}=  Evaluate  ${initial_metric} + 1
+
+    Disconnect from MQTT server
+    Verify Cassandana Metric ${metric_name} equals ${expected_metric}
+
 Connect to MQTT server
-    [Arguments]    ${server_ip}  ${client_id}=${EMPTY}
+    [Arguments]    ${server_ip}=${HOST}  ${client_id}=${CLIENT_ID}
     Connect    ${server_ip}  client_id=${client_id}
 
 Disconnect from MQTT server
